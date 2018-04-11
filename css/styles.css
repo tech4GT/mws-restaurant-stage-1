@@ -374,7 +374,7 @@ main#maincontent:after{
     margin: 0px auto;
     text-align: center;
   }
-  footer#footer.footer{
+  .footer{
     float: left;
     clear: both;
     display: block;
