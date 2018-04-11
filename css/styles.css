@@ -214,6 +214,8 @@ nav h1 a {
   top: 0;
   width: 100%;
   z-index: 1000;
+  padding-left: 0px;
+  padding-right: 0px; 
 }
 .inside #map-container {
   float: right;
@@ -231,8 +233,9 @@ nav h1 a {
 }
 .inside #footer {
   bottom: 0;
-  position: absolute;
+  position: relative;
   width: 50%;
+  padding: 25px 0px 25px;
 }
 #restaurant-name {
   color: #f18200;
@@ -253,6 +256,8 @@ nav h1 a {
 #restaurant-img {
   width: 46%;
   margin: 2%;
+
+
 }
 #restaurant-address {
   font-size: 12pt;
@@ -277,7 +282,7 @@ text-align: center !important;
 padding: 2%;
 display: block;
 }
-#restaurant-container p{
+#restaurant-container article{
   text-align: center;
   margin: 0px auto !important;
   padding: 10px;
@@ -293,7 +298,11 @@ display: block;
   width: 46%;
   margin: 2%;
 }
-
+main#maincontent{
+  display: block;
+  clear: both;
+  overflow-x: hidden;
+}
 main#maincontent:after{
   display: block;
   content: "";
@@ -330,4 +339,55 @@ main#maincontent:after{
 .inside #footer{
   width: 100%;
   clear: both;
+}
+
+/* media queries */
+@media only screen and (max-width: 850px){
+  .inside #map-container{
+    position: relative;
+    height: 300px;
+    float: right;
+    top:auto;
+    right: auto;
+  }
+  #restaurant-img-container img{
+    width: 96%;
+    height: 400px;
+    overflow: hidden;
+  }
+  #breadcrumb{
+    width: 96%;
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+  #reviews-container{
+    width: 96%;
+  }
+  #reviews-container h2{
+    text-align: center
+  }
+  ul#reviews-list{
+    margin-bottom: 40px;
+  }
+  ul#reviews-list li{
+    padding: 10px;
+    margin: 0px auto;
+    text-align: center;
+  }
+  footer#footer{
+    float: left;
+    clear: both;
+    display: block;
+    padding: 10px
+  }
+
+}
+@media only screen and (max-width:600px){
+  #restaurant-container{
+    width: 96%;
+  }
+  .inside #map-container{
+    margin: 0%;
+    width:100%;
+  }
 }
