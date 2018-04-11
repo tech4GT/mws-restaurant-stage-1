@@ -17,19 +17,19 @@
 
   <main id="maincontent">
     <section id="map-container">
-      <div tabindex="0" id="map" role="doc-cover"></div>
+      <div id="map" role="doc-cover"></div>
     </section>
     <section>
       <div class="filter-options" role="option">
         <h2 role="banner">Filter Results</h2>
-        <select tabindex="1" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+        <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
         </select>
-        <select tabindex="2" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+        <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
           <option value="all">All Cuisines</option>
         </select>
       </div>
-      <ul tabindex="3" id="restaurants-list" role="list"></ul>
+      <ul id="restaurants-list" role="list"></ul>
     </section>
   </main>
 
