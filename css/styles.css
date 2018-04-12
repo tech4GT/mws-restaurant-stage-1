@@ -395,6 +395,10 @@ main#maincontent:after{
     display: block;
     padding: 20px
   }
+  img#restaurant-img.restaurant-img{
+    width: 96%;
+    height: auto;
+  }
 
 }
 @media only screen and (max-width:600px){
