@@ -216,6 +216,14 @@ nav h1 a {
   z-index: 1000;
   padding-left: 0px;
   padding-right: 0px; 
+  height: 130px;
+}
+.inside header h1{
+  height: 80px !important;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  align-content: center;
 }
 .inside #map-container {
   float: right;
@@ -303,12 +311,18 @@ main#maincontent{
   clear: both;
   overflow-x: hidden;
 }
+.pretty{
+  margin-top: 131px;
+}
+main#maincontent h2{
+  padding: 10px 10px 0px;
+}
 main#maincontent:after{
   display: block;
   content: "";
   clear:both;
 }
-#reviews-container h2 {
+#reviews-container h3 {
   color: #f58500;
   font-size: 24pt;
   font-weight: 300;
@@ -359,11 +373,12 @@ main#maincontent:after{
     width: 96%;
     padding-left: 2%;
     padding-right: 2%;
+    height: 50px;
   }
   #reviews-container{
     width: 96%;
   }
-  #reviews-container h2{
+  #reviews-container h3{
     text-align: center
   }
   ul#reviews-list{

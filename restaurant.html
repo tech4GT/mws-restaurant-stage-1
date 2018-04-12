@@ -7,33 +7,35 @@
   <!-- Main CSS file -->
   <link rel="stylesheet" href="css/styles.css" type="text/css">
   <title>Restaurant Info</title>
+  <meta name="viewport" content="width=device-width">
 </head>
 
 <body class="inside">
   <!-- Beginning header -->
   <header>
     <!-- Beginning nav -->
-    <nav>
+    <nav aria-label="breadcrumb" class="breadcrumb"> 
       <h1 role="heading"><a href="/">Restaurant Reviews</a></h1>
-    </nav>
+    
     <!-- Beginning breadcrumb -->
-    <ul id="breadcrumb" role="menubar" >
+    <ul id="breadcrumb">
       <li><a tabindex="1" href="/">Home</a></li>
     </ul>
     <!-- End breadcrumb -->
+    </nav>
     <!-- End nav -->
   </header>
   <!-- End header -->
 
   <!-- Beginning main -->
-  <main id="maincontent">
+  <main id="maincontent" class="pretty">
       <section id="restaurant-img-container">
-          <h1 id="restaurant-name" role="banner"></h1>
+          <h2 id="restaurant-name" role="banner"></h2>
           <img id="restaurant-img" role="img">
       </section>
     <!-- Beginning map -->
     <section id="map-container">
-      <div id="map" role="application"></div>
+      <div id="map" tabindex="2" role="application"></div>
     </section>
     <!-- End map -->
     <!-- Beginning restaurant -->
