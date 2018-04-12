@@ -398,6 +398,10 @@ main#maincontent:after{
     width: 96%;
     height: auto;
   }
+  #restaurant-img-container{
+    height: 500px;
+    overflow: hidden;
+  }
 
 }
 @media only screen and (max-width:600px){
@@ -407,5 +411,8 @@ main#maincontent:after{
   .inside #map-container{
     margin: 0%;
     width:100%;
+  }
+  #restaurant-img-container{
+    height: auto;
   }
 }
