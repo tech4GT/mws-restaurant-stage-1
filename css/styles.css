@@ -338,7 +338,7 @@ main#maincontent:after{
   border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
-  margin: 0 0 30px;
+  margin: auto;
   overflow: hidden;
   padding: 0 20px 20px;
   position: relative;
@@ -386,7 +386,6 @@ main#maincontent:after{
   }
   ul#reviews-list li{
     padding: 10px;
-    margin: 0px auto;
     text-align: center;
   }
   .footer{
