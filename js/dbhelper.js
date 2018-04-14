@@ -1,6 +1,7 @@
 /**
  * Common database helper functions.
  */
+
 class DBHelper {
 
   /**
@@ -8,8 +9,8 @@ class DBHelper {
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    const port = 5500 // Change this to your server port
-    return `http://localhost:${port}/data/restaurants.json`;
+    const port = 1337 // Change this to your server port
+    return `http://localhost:${port}/restaurants`;
   }
 
   /**
@@ -20,8 +21,7 @@ class DBHelper {
     xhr.open('GET', DBHelper.DATABASE_URL);
     xhr.onload = () => {
       if (xhr.status === 200) { // Got a success response from server!
-        const json = JSON.parse(xhr.responseText);
-        const restaurants = json.restaurants;
+        const restaurants = JSON.parse(xhr.responseText);
         callback(null, restaurants);
       } else { // Oops!. Got an error from server.
         const error = (`Request failed. Returned status of ${xhr.status}`);
@@ -36,71 +36,130 @@ class DBHelper {
    */
   static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', DBHelper.DATABASE_URL + `/${id}`);
+    xhr.onload = ()=>{
+      if(xhr.status == 200){
+        const restaurant = JSON.parse(xhr.responseText);
+        callback(null,restaurant)
+      } else if(xhr.status == 404){
+        callback(`Restaurant does not exist. Returned status of ${xhr.status}`, null);
+      } else{
+        const error = (`Request failed. Returned status of ${xhr.status}`);
         callback(error, null);
-      } else {
-        const restaurant = restaurants.find(r => r.id == id);
-        if (restaurant) { // Got the restaurant
-          callback(null, restaurant);
-        } else { // Restaurant does not exist in the database
-          callback('Restaurant does not exist', null);
-        }
       }
-    });
+    }
+    xhr.send();
   }
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
    */
   static fetchRestaurantByCuisine(cuisine, callback) {
-    // Fetch all restaurants  with proper error handling
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', DBHelper.DATABASE_URL + `/?cuisine_type=${cuisine}`);
+    xhr.onload = ()=>{
+      if(xhr.status == 200){
+        const restaurant = JSON.parse(xhr.responseText);
+        callback(null,restaurant)
+      } else{
+        const error = (`Request failed. Returned status of ${xhr.status}`);
         callback(error, null);
-      } else {
-        // Filter restaurants to have only given cuisine type
-        const results = restaurants.filter(r => r.cuisine_type == cuisine);
-        callback(null, results);
       }
-    });
+    }
+    xhr.send();
+
+
+    // Fetch all restaurants  with proper error handling
+    // DBHelper.fetchRestaurants((error, restaurants) => {
+    //   if (error) {
+    //     callback(error, null);
+    //   } else {
+    //     // Filter restaurants to have only given cuisine type
+    //     const results = restaurants.filter(r => r.cuisine_type == cuisine);
+    //     callback(null, results);
+    //   }
+    // });
   }
 
   /**
    * Fetch restaurants by a neighborhood with proper error handling.
    */
   static fetchRestaurantByNeighborhood(neighborhood, callback) {
-    // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', DBHelper.DATABASE_URL + `/?neighborhood=${neighborhood}`);
+    xhr.onload = ()=>{
+      if(xhr.status == 200){
+        const restaurant = JSON.parse(xhr.responseText);
+        callback(null,restaurant)
+      } else{
+        const error = (`Request failed. Returned status of ${xhr.status}`);
         callback(error, null);
-      } else {
-        // Filter restaurants to have only given neighborhood
-        const results = restaurants.filter(r => r.neighborhood == neighborhood);
-        callback(null, results);
       }
-    });
+    }
+    xhr.send();
+    // Fetch all restaurants
+    // DBHelper.fetchRestaurants((error, restaurants) => {
+    //   if (error) {
+    //     callback(error, null);
+    //   } else {
+    //     // Filter restaurants to have only given neighborhood
+    //     const results = restaurants.filter(r => r.neighborhood == neighborhood);
+    //     callback(null, results);
+    //   }
+    // });
   }
 
   /**
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
   static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
-    // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
+
+    console.log(arguments)
+    let xhr = new XMLHttpRequest(),url=this.DATABASE_URL;
+    if(cuisine!="all"){
+      url = url + `/?cuisine_type=${cuisine}`;
+    if(neighborhood!="all"){
+      url = url + `,neighborhood=${neighborhood}`
+    }
+  }
+  else{
+    if(neighborhood!="all"){
+      url = url + `/?neighborhood=${neighborhood}`
+    }
+  }
+    console.log(url)
+    xhr.open('GET', url);
+    xhr.onload = ()=>{
+      if(xhr.status == 200){
+        const restaurants = JSON.parse(xhr.responseText);
+        callback(null,restaurants)
+      } else{
+        const error = (`Request failed. Returned status of ${xhr.status}`);
         callback(error, null);
-      } else {
-        let results = restaurants
-        if (cuisine != 'all') { // filter by cuisine
-          results = results.filter(r => r.cuisine_type == cuisine);
-        }
-        if (neighborhood != 'all') { // filter by neighborhood
-          results = results.filter(r => r.neighborhood == neighborhood);
-        }
-        callback(null, results);
       }
-    });
+    }
+    xhr.send()
+
+
+
+    // Fetch all restaurants
+    // DBHelper.fetchRestaurants((error, restaurants) => {
+    //   if (error) {
+    //     callback(error, null);
+    //   } else {
+    //     let results = restaurants
+    //     if (cuisine != 'all') { // filter by cuisine
+    //       results = results.filter(r => r.cuisine_type == cuisine);
+    //     }
+    //     if (neighborhood != 'all') { // filter by neighborhood
+    //       results = results.filter(r => r.neighborhood == neighborhood);
+    //     }
+    //     callback(null, results);
+    //   }
+    // });
   }
 
   /**
@@ -150,7 +209,8 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}`);
+    if(restaurant.photograph != undefined)
+      return (`/img/${restaurant.photograph}.jpg`);
   }
 
   /**
