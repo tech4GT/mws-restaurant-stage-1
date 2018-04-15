@@ -85,6 +85,14 @@ window.initMap = () => {
       });
     });
   }
+  if (!self.indexedDB) 
+  self.alert("Your browser doesn't support a stable version of IndexedDB. Offline feature will not be available.");
+  
+  else{
+    window.addEventListener('load',()=>{
+      DBHelper.createDB();
+    });
+  }
   let loc = {
     lat: 40.722216,
     lng: -73.987501
