@@ -3,13 +3,11 @@ var urlsToCache = [
   '.',
   'index.html',
   'restaurant.html',
-  'css/styles.css',
-  'js/main.js',
-  'js/dbhelper.js',
-  'js/restaurant_info.js'
+  'css/styles.min.css',
+  'js/minMain.js',
+  'js/resto.min.js',
 ];
 genaratePaths(urlsToCache)
-
 self.addEventListener('install', (event)=>{
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -22,9 +20,7 @@ self.addEventListener('install', (event)=>{
 
 self.addEventListener('fetch', function(event) {
 event.respondWith(fetch(event.request).catch(()=>{return caches.match(event.request);}))
-
 });
-
 function genaratePaths(arr){
   for(let i=1;i<=10;i++){
     arr.push(`img/${i}.jpg`)

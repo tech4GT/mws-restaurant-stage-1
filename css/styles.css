@@ -361,6 +361,15 @@ main#maincontent:after{
   width: 100%;
   clear: both;
 }
+#restaurant-img-container h2{
+  color: black;
+}
+#reviews-container h3{
+  color: black;
+}
+#breadcrumb li a{
+  color: darkred;
+}
 
 /* media queries */
 @media only screen and (max-width: 850px){
