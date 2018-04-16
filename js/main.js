@@ -4,6 +4,37 @@ cuisines
 var map
 var markers = []
 
+function isElementInViewport (el) {
+  
+  var rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+  );
+}
+
+function lazyLoadImages() {
+  var images = document.querySelectorAll("img[data-src]"),
+  item;
+  // load images that have entered the viewport
+  [].forEach.call(images, function (item) {
+    if (isElementInViewport(item)) {
+      item.setAttribute("src",item.getAttribute("data-src"));
+      item.removeAttribute("data-src")
+    }
+  })
+  // if all the images are loaded, stop calling the handler
+  if (images.length == 0) {
+    window.removeEventListener("DOMContentLoaded", lazyLoadImages);
+    window.removeEventListener("load", lazyLoadImages);
+    window.removeEventListener("resize", lazyLoadImages);
+    window.removeEventListener("scroll", lazyLoadImages);
+  }
+}
+
+
 /**
 * Fetch neighborhoods and cuisines as soon as the page is loaded.
 */
@@ -102,7 +133,15 @@ window.initMap = () => {
     center: loc,
     scrollwheel: false
   });
+  const mapEl = document.getElementById('map');
+  mapEl.setAttribute("role", "application");
+  mapEl.setAttribute("tabindex", 0);
   updateRestaurants();
+  window.addEventListener("DOMContentLoaded", lazyLoadImages);
+  window.addEventListener("load", lazyLoadImages);
+  window.addEventListener("resize", lazyLoadImages);
+  window.addEventListener("scroll", lazyLoadImages);
+  
 }
 
 /**
@@ -154,6 +193,10 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
     ul.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
+  window.addEventListener("DOMContentLoaded", lazyLoadImages);
+  window.addEventListener("load", lazyLoadImages);
+  window.addEventListener("resize", lazyLoadImages);
+  window.addEventListener("scroll", lazyLoadImages);
 }
 
 /**
@@ -166,7 +209,7 @@ createRestaurantHTML = (restaurant) => {
   image.className = 'restaurant-img';
   const src = DBHelper.imageUrlForRestaurant(restaurant);
   if(src)
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.setAttribute('data-src',src)
   image.alt = `Restaurant ${restaurant.name}`
   li.append(image);
   
@@ -186,7 +229,7 @@ createRestaurantHTML = (restaurant) => {
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
   li.append(more)
-  more.tabIndex = restaurant.id + 3;
+  more.tabIndex = 0;
   
   return li
 }

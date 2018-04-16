@@ -182,7 +182,7 @@ nav h1 a {
   font-size: 11pt;
 }
 #restaurants-list li a {
-  background-color: orange;
+  background-color: #252831;
   border-bottom: 3px solid #eee;
   color: #fff;
   display: inline-block;
@@ -192,6 +192,13 @@ nav h1 a {
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+}
+
+.filter-options{
+  background-color: #252831;
+}
+footer#footer{
+  color: white;
 }
 
 /* media queries */

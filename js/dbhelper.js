@@ -235,7 +235,7 @@ class DBHelper {
   */
   static imageUrlForRestaurant(restaurant) {
     if(restaurant.photograph != undefined)
-    return (`/img/${restaurant.photograph}.jpg`);
+    return (`/img/${restaurant.photograph}.webp`);
   }
   
   /**
@@ -282,13 +282,11 @@ class DBHelper {
       };
     });
   }).catch(err=>{
-    console.log("we are here")
     var request = window.indexedDB.open("restaurantsDB");
     request.onerror = function(event) {
       console.err(`Bad request with error code ${request.errorCode}`);
     };
     request.onsuccess = function (event) { 
-      console.log("this was fired")
       DBHelper.db = event.target.result;
     };
   })

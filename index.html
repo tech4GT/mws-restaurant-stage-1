@@ -3,7 +3,9 @@
 
 <head>
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link rel="stylesheet" href="css/styles.css">
+  <noscript>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+  </noscript>
   <title>Restaurant Reviews</title>
   <meta name="viewport" content="width=device-width">
 </head>
@@ -14,34 +16,42 @@
       <h1 role="heading"><a href="/">Restaurant Reviews</a></h1>
     </nav>
   </header>
-
+  
   <main id="maincontent">
-    <section id="map-container">
-      <div id="map" role="application" tabindex="1"></div>
+    <section id="map-container" role="application">
+      <div id="map"></div>
     </section>
     <section>
-      <div class="filter-options" role="option">
+      <div class="filter-options">
         <h2 role="banner">Filter Results</h2>
-        <select tabindex="2" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+        <select aria-label="neighborhoods-select" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
         </select>
-        <select tabindex="3" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+        <select aria-label="cuisines-select" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
           <option value="all">All Cuisines</option>
         </select>
       </div>
       <ul id="restaurants-list" role="list"></ul>
     </section>
   </main>
-
+  <script type="text/javascript">
+    /* First CSS File */
+    var giftofspeed = document.createElement('link');
+    giftofspeed.rel = 'stylesheet';
+    giftofspeed.href = 'css/styles.css';
+    giftofspeed.type = 'text/css';
+    var godefer = document.getElementsByTagName('link')[0];
+    godefer.parentNode.insertBefore(giftofspeed, godefer);
+  </script>
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+  <script async defer type="application/javascript" charset="utf-8" src="js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNGeLCZ7Snz5RsJHXROU-MeMdWBYXeT2Y&libraries=places&callback=initMap"></script>
-
-
+  
+  
   <footer id="footer">
     Copyright (c) 2017 <a href="/" role="presentation"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
-
+  
 </body>
 
 </html>
