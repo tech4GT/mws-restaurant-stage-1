@@ -23,7 +23,7 @@ event.respondWith(fetch(event.request).catch(()=>{return caches.match(event.requ
 });
 function genaratePaths(arr){
   for(let i=1;i<=10;i++){
-    arr.push(`img/${i}.jpg`)
+    arr.push(`img/${i}.webp`)
     arr.push(`restaurant.html?id=${i}`)
   }
 }
