@@ -6,6 +6,7 @@ var urlsToCache = [
   'css/styles.min.css',
   'js/minMain.js',
   'js/resto.min.js',
+  'js/dbMin'
 ];
 genaratePaths(urlsToCache)
 self.addEventListener('install', (event)=>{
