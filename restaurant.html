@@ -6,6 +6,7 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" sizes="192x192" href="ic_192.png">
   <!-- Normalize.css for better cross-browser consistency -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
   <noscript>
@@ -71,18 +72,19 @@
     /* First CSS File */
     var giftofspeed = document.createElement('link');
     giftofspeed.rel = 'stylesheet';
-    giftofspeed.href = 'css/styles.min.css';
+    // giftofspeed.href = 'css/styles.min.css';
+    giftofspeed.href = 'css/styles.css';
     giftofspeed.type = 'text/css';
     var godefer = document.getElementsByTagName('link')[0];
     godefer.parentNode.insertBefore(giftofspeed, godefer);
   </script>
 
 
-  <script async type="application/javascript" src="js/dbMin.js"></script>
-  <script async type="application/javascript" src="js/resto.min.js"></script>
-  <!-- <script async defer type="text/javascript" src="js/dbhelper.js"></script> -->
-  <!-- Main javascript file -->
-  <!-- <script async defer type="text/javascript" src="js/restaurant_info.js"></script> -->
+  <!-- <script async type="application/javascript" src="js/dbMin.js"></script> -->
+  <script async type="application/javascript" src="js/dbhelper.js"></script>
+  <!-- <script async type="application/javascript" src="js/resto.min.js"></script> -->
+  <script async type="application/javascript" src="js/restaurant_info.js"></script>
+
   <!-- Google Maps -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNGeLCZ7Snz5RsJHXROU-MeMdWBYXeT2Y&libraries=places&callback=initMap"></script>
   <!-- End scripts -->

@@ -65,8 +65,30 @@ fetchRestaurantFromURL = (callback) => {
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
-  name.innerHTML = restaurant.name;
+  name.innerHTML = restaurant.name + "  " + `<i id="fav"></i>`;
 
+  const fav = document.getElementById('fav');
+  DBHelper.getDB((db)=>{
+    var objectStore = db.transaction("favs")
+    .objectStore("favs")
+    .get(parseInt(restaurant.id))
+    .onsuccess = function(event){
+      if(event.target.result.starred){
+        fav.setAttribute("class","fa fa-star");
+      }
+      else{
+        fav.setAttribute("class","fa fa-star-o");
+      }
+      var starred = event.target.result.starred;
+      fav.addEventListener('click',function(){
+        starred = !starred;
+        var this_ = this,classes = ["fa fa-star","fa fa-star-o"];
+        db.transaction("favs","readwrite").objectStore("favs").put({id: restaurant.id, starred: starred})
+        .onsuccess = ()=>{
+          this_.setAttribute("class",classes[(classes.indexOf(this.getAttribute("class"))+1)%2])}
+        })
+      }
+    })
   const coverImage = document.getElementById('restaurant-img');
   coverImage.alt = `Restaurant ${restaurant.name}`;
 

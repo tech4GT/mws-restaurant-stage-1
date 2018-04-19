@@ -200,7 +200,7 @@ nav h1 a {
 footer#footer{
   color: white;
 }
-.fa.fa-star, .fa.fa-star-o{
+.fa.fa-star, .fa.fa-star-o, #fav{
   color: gold;
   font-size: 40px;
   padding-bottom: 10px;
