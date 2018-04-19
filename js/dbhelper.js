@@ -269,6 +269,7 @@ class DBHelper {
         
         // Create an objectStore for this database
         var objectStore = db.createObjectStore("restaurants", { keyPath: "id" });
+        var favObjStore = db.createObjectStore("favs",{keyPath: "id" });
         objectStore.createIndex("neighborhood", "neighborhood", { unique: false });
         objectStore.createIndex("cuisine_type", "cuisine_type", { unique: false });
         
@@ -279,6 +280,13 @@ class DBHelper {
             ObjectStore.add(restaurant);
           });
         };
+
+        favObjStore.transaction.oncomplete = function (event) { 
+          var ObjectStore = db.transaction("favs", "readwrite").objectStore("favs");
+          restaurants.forEach(function (restaurant) { 
+            ObjectStore.add({id: restaurant.id,starred: false})
+           })
+         }
       };
     });
   }).catch(err=>{

@@ -200,6 +200,12 @@ nav h1 a {
 footer#footer{
   color: white;
 }
+.fa.fa-star, .fa.fa-star-o{
+  color: gold;
+  font-size: 40px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
 
 /* media queries */
 @media only screen and (max-width:1025px){
@@ -271,8 +277,6 @@ footer#footer{
 #restaurant-img {
   width: 46%;
   margin: 2%;
-
-
 }
 #restaurant-address {
   font-size: 12pt;
