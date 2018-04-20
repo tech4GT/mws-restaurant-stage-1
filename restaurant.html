@@ -68,10 +68,10 @@
     <form id="myForm" autocomplete="true">
       
       <section style="display: block;width: 100%; text-align: center">
-        <label for="restaurant_id" style="width: 30%;">
+        <label style="display: none" for="restaurant_id" style="width: 30%;">
           Restaurant Id
         </label>
-        <input style="width: 100%" type="number" name="restaurant_id" id="form_restaurant_id">
+        <input type="hidden" style="width: 100%" type="number" name="restaurant_id" id="form_restaurant_id">
       </section>
       <br>  
       <section style="display: block;width: 100%; text-align: center">
@@ -109,7 +109,7 @@
   
   <!-- Beginning scripts -->
   <!-- Database helpers -->
-  <script async type="application/javascript" src="js/dbMin.js"></script>
+  <script type="application/javascript" src="js/dbMin.js"></script>
   <!-- <script async type="application/javascript" src="js/dbhelper.js"></script> -->
   
   <script type="text/javascript">
@@ -135,7 +135,23 @@
       if(navigator.onLine){
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
-          window.location.href = url;
+          DBHelper.getDB(db=>{
+            var newReview = {
+              restaurant_id: document.getElementById("form_restaurant_id").value,
+              name: document.getElementById("form_name").value,
+              rating: document.getElementById("form_rating").value,
+              comments: document.getElementById("form_comments").value
+            }
+            var objectStore = db.transaction("restaurants","readwrite").objectStore("restaurants");
+            objectStore.get(window.restaurant.id).onsuccess = function(event){
+              event.target.result.reviews.push(newReview);
+              event.target.result.notified = true;
+              req = objectStore.put(event.target.result);
+              req.onsuccess = ()=>{
+                window.location.href = url;
+              }
+            }
+          })
         };
         xhr.open("POST","http://localhost:1337/reviews",true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -179,7 +195,7 @@
   </script>
   
   
-  <script async type="application/javascript" src="js/resto.min.js"></script>
+  <script type="application/javascript" src="js/resto.min.js"></script>
   <!-- <script async type="application/javascript" src="js/restaurant_info.js"></script> -->
   
   <!-- Google Maps -->

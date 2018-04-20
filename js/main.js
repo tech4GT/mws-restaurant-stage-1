@@ -4,16 +4,26 @@ cuisines
 var map
 var markers = []
 
-
-/**
-* Fetch neighborhoods and cuisines as soon as the page is loaded.
+/* 
+Service worker registration
 */
-// document.addEventListener('DOMContentLoaded', (event) => {
-//   // fetchNeighborhoods();
-//   // fetchCuisines();
-//   console.log("event ara hai")
-// });
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
+if (!self.indexedDB) 
+self.alert("Your browser doesn't support a stable version of IndexedDB. Offline feature will not be available.");
 
+else{
+  DBHelper.createDB();
+}
 
 function isElementInViewport (el) {
   
@@ -102,26 +112,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
 * Initialize Google map, called from HTML.
 */
 window.initMap = () => {
-  /* 
-  Service worker registration
-  */
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js').then(function(registration) {
-        // Registration was successful
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function(err) {
-        // registration failed :(
-        console.log('ServiceWorker registration failed: ', err);
-      });
-    });
-  }
-  if (!self.indexedDB) 
-  self.alert("Your browser doesn't support a stable version of IndexedDB. Offline feature will not be available.");
   
-  else{
-    DBHelper.createDB();
-  }
   let loc = {
     lat: 40.722216,
     lng: -73.987501

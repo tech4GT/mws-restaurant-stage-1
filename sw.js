@@ -20,7 +20,10 @@ self.addEventListener('install', (event)=>{
 });
 
 self.addEventListener('fetch', function(event) {
-event.respondWith(fetch(event.request).catch(()=>{return caches.match(event.request);}))
+  event.respondWith(caches.match(event.request).then(function (response) {
+    return response || fetch(event.request);
+    }));
+// event.respondWith(fetch(event.request).catch(()=>{return caches.match(event.request);}))
 });
 function genaratePaths(arr){
   for(let i=1;i<=10;i++){
