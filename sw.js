@@ -3,10 +3,10 @@ var urlsToCache = [
   '.',
   'index.html',
   'restaurant.html',
-  'css/styles.css',
-  'js/main.js',
-  'js/restaurant_info.js',
-  'js/dbhelper.js'
+  'css/styles.min.css',
+  'js/minMain.js',
+  'js/resto.min.js',
+  'js/dbMin.js'
 ];
 genaratePaths(urlsToCache)
 self.addEventListener('install', (event)=>{
