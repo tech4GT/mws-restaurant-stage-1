@@ -2,16 +2,16 @@
 <html lang="en">
 
 <head>
-    <meta name="theme-color" content="#252831">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" sizes="192x192" href="ic_192.png">
+  <meta name="theme-color" content="#252831">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" sizes="192x192" href="ic_192.png">
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
   <noscript>
-      <link rel="stylesheet" type="text/css" href="css/styles.min.css" />
-    </noscript>
+    <link rel="stylesheet" type="text/css" href="css/styles.min.css" />
+  </noscript>
   <title>Restaurant Info</title>
   <meta name="viewport" content="width=device-width">
 </head>
@@ -22,52 +22,96 @@
     <!-- Beginning nav -->
     <nav aria-label="breadcrumb" class="breadcrumb"> 
       <h1 role="heading"><a href="/">Restaurant Reviews</a></h1>
-    
-    <!-- Beginning breadcrumb -->
-    <ul id="breadcrumb">
-      <li><a href="/">Home</a></li>
-    </ul>
-    <!-- End breadcrumb -->
+      
+      <!-- Beginning breadcrumb -->
+      <ul id="breadcrumb">
+        <li><a href="/">Home</a></li>
+      </ul>
+      <!-- End breadcrumb -->
     </nav>
     <!-- End nav -->
   </header>
   <!-- End header -->
-
+  
   <!-- Beginning main -->
-  <main id="maincontent" class="pretty">
-      <section id="restaurant-img-container">
-          <h2 id="restaurant-name" role="banner"></h2>
-          <img id="restaurant-img" role="img">
+  
+</div>
+<main id="maincontent" class="pretty">
+  <section id="restaurant-img-container">
+    <h2 id="restaurant-name" role="banner"></h2>
+    <img id="restaurant-img" role="img">
+  </section>
+  <!-- Beginning map -->
+  <section id="map-container" role="application">
+    <div id="map"></div>
+  </section>
+  <!-- End map -->
+  <!-- Beginning restaurant -->
+  <section id="restaurant-container">
+    <article id="restaurant-cuisine"></article>
+    <article id="restaurant-address"></article>
+    <table id="restaurant-hours" role="contentinfo"></table>
+  </section>
+  <!-- end restaurant -->
+  <!-- Beginning reviews -->
+  <section id="reviews-container">
+    <ul id="reviews-list" role="list"></ul>
+  </section>
+  <!-- End reviews -->
+</main>
+<!-- End main -->
+<div id="myModal" class="modal">
+  
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <form id="myForm" autocomplete="true">
+      
+      <section style="display: block;width: 100%; text-align: center">
+        <label for="restaurant_id" style="width: 30%;">
+          Restaurant Id
+        </label>
+        <input style="width: 100%" type="number" name="restaurant_id" id="form_restaurant_id">
       </section>
-    <!-- Beginning map -->
-    <section id="map-container" role="application">
-      <div id="map"></div>
-    </section>
-    <!-- End map -->
-    <!-- Beginning restaurant -->
-    <section id="restaurant-container">
-      <article id="restaurant-cuisine"></article>
-      <article id="restaurant-address"></article>
-      <table id="restaurant-hours" role="contentinfo"></table>
-    </section>
-    <!-- end restaurant -->
-    <!-- Beginning reviews -->
-    <section id="reviews-container">
-      <ul id="reviews-list" role="list"></ul>
-    </section>
-    <!-- End reviews -->
-  </main>
-  <!-- End main -->
-
+      <br>  
+      <section style="display: block;width: 100%; text-align: center">
+        <label style="width: 30%" for="name">
+          Name
+        </label>
+        <input style="width: 100%" type="text" name="name" id="form_name">
+      </section>
+      <br>
+      <section style="display: block;width: 100%; text-align: center">
+        <label for="rating">
+          Rating
+        </label>
+        <input style="width: 100%" type="number" name="rating" id="form_rating">
+      </section>
+      <br>
+      <section style="display: block;width: 100%; text-align: center">
+        <label style="width: 30%" for="comments">
+          Comments
+        </label>
+        <input style="width: 100%" type="text" name="comments" id="form_comments">
+      </section>
+      <br>
+      <section style="text-align: center">     
+        <input id="form_submit" type="submit" value="submit">
+      </section>
+      
+    </form>
+  </div>
   <!-- Beginning footer -->
   <footer id="footer" class="footer">
     Copyright (c) 2017 <a href="/" role="presentation"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
   <!-- End footer -->
-
+  
   <!-- Beginning scripts -->
   <!-- Database helpers -->
-
+  <!-- <script async type="application/javascript" src="js/dbMin.js"></script> -->
+  <script async type="application/javascript" src="js/dbhelper.js"></script>
+  
   <script type="text/javascript">
     /* First CSS File */
     var giftofspeed = document.createElement('link');
@@ -77,18 +121,71 @@
     giftofspeed.type = 'text/css';
     var godefer = document.getElementsByTagName('link')[0];
     godefer.parentNode.insertBefore(giftofspeed, godefer);
+    
+    
+    const rest_id = document.getElementById("form_restaurant_id");
+    rest_id.setAttribute("value",parseInt(window.location.href.substr(-1)))
+    document.getElementById("form_restaurant_id").setAttribute("contenteditable","false")
+    
+    const url = window.location.href;
+    
+    
+    document.getElementById("form_submit").addEventListener("click",(e)=>{
+      e.preventDefault()
+      if(navigator.onLine){
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+          window.location.href = url;
+        };
+        xhr.open("POST","http://localhost:1337/reviews",true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(`restaurant_id=${encodeURIComponent(document.getElementById('form_restaurant_id').value)}&name=${encodeURIComponent(document.getElementById('form_name').value)}&rating=${encodeURIComponent(document.getElementById('form_rating').value)}&comments=${encodeURIComponent(document.getElementById('form_comments').value)}`);
+      }
+      else{
+        DBHelper.getDB((db)=>{
+          var transaction = db.transaction(["reviews"], "readwrite");
+          transaction.onerror = function(event) {
+            alert("Failed to add review")
+          };
+          
+          // create an object store on the transaction
+          var objectStore = transaction.objectStore("reviews");
+          
+          var newReview = {
+            restaurant_id: document.getElementById("form_restaurant_id").value,
+            name: document.getElementById("form_name").value,
+            rating: document.getElementById("form_rating").value,
+            comments: document.getElementById("form_comments").value
+          };
+          // Make a request to add our newItem object to the object store
+          var objectStoreRequest = objectStore.add(newReview);
+          objectStoreRequest.onsuccess = ()=>{
+            alert("review added offline!")
+            newReview.updatedAt = new Date();
+            window.restaurant.reviews;
+            objectStore = db.transaction("restaurants","readwrite").objectStore("restaurants");
+            objectStore.get(window.restaurant.id).onsuccess = function(event){
+              event.target.result.reviews.push(newReview);
+              event.target.result.notified = true;
+              req = objectStore.put(event.target.result);
+              req.onsuccess = ()=>{
+                window.location.reload(true);
+              }
+            }
+          }
+        })
+      }
+    })
   </script>
-
-
-  <!-- <script async type="application/javascript" src="js/dbMin.js"></script> -->
-  <script async type="application/javascript" src="js/dbhelper.js"></script>
+  
+  
   <!-- <script async type="application/javascript" src="js/resto.min.js"></script> -->
   <script async type="application/javascript" src="js/restaurant_info.js"></script>
-
+  
   <!-- Google Maps -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNGeLCZ7Snz5RsJHXROU-MeMdWBYXeT2Y&libraries=places&callback=initMap"></script>
   <!-- End scripts -->
-
+  
 </body>
 
 </html>

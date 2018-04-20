@@ -2,7 +2,6 @@
 * Common database helper functions.
 */
 
-
 class DBHelper {
   
   /**
@@ -254,6 +253,13 @@ class DBHelper {
   static createDB(){
     fetch("http://localhost:1337/restaurants").then(data=>{
     data.json().then(restaurants=>{
+      restaurants.forEach(restaurant=>{
+        fetch(`http://localhost:1337/reviews/?restaurant_id=${restaurant.id}`).then(reviewsData=>{
+          reviewsData.json().then(reviewsJson=>{
+            restaurant.reviews = reviewsJson;
+          })
+        })
+      })
       var request = window.indexedDB.open('restaurantsDB',1);
       
       request.onerror = function(event) {
@@ -270,6 +276,7 @@ class DBHelper {
         // Create an objectStore for this database
         var objectStore = db.createObjectStore("restaurants", { keyPath: "id" });
         var favObjStore = db.createObjectStore("favs",{keyPath: "id" });
+        var reviews = db.createObjectStore("reviews",{keyPath: "restaurant_id" });
         objectStore.createIndex("neighborhood", "neighborhood", { unique: false });
         objectStore.createIndex("cuisine_type", "cuisine_type", { unique: false });
         
@@ -279,14 +286,11 @@ class DBHelper {
           restaurants.forEach(function(restaurant) {
             ObjectStore.add(restaurant);
           });
-        };
-
-        favObjStore.transaction.oncomplete = function (event) { 
           var ObjectStore = db.transaction("favs", "readwrite").objectStore("favs");
           restaurants.forEach(function (restaurant) { 
             ObjectStore.add({id: restaurant.id,starred: false})
-           })
-         }
+          })
+        };
       };
     });
   }).catch(err=>{
@@ -316,3 +320,38 @@ Object.defineProperty(DBHelper, 'restaurantsArr', {
   enumerable : true,
   configurable : false
 });
+
+window.addEventListener("offline",()=>{
+  alert("You are offline now, your reviews will be synced when the connection is re-established")
+});
+window.addEventListener("online",()=>{
+  DBHelper.getDB((db)=>{
+    var objectStore = db.transaction("reviews","readwrite").objectStore("reviews");
+    var reviews = [];
+    
+    objectStore.openCursor().onsuccess = function(event) {
+      var cursor = event.target.result;
+      if (cursor) {
+        reviews.push(cursor.value);
+        cursor.continue();
+      }
+      else {
+        console.log("Read all reviews from database");
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+          console.log("review synced")
+          objectStore = db.transaction("reviews","readwrite").objectStore("reviews")
+          reviews.forEach(rev=>{
+            objectStore.delete(rev.restaurant_id)
+          })
+        };
+        
+        xhr.open("POST","http://localhost:1337/reviews",true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        reviews.forEach((review)=>{
+          xhr.send(`restaurant_id=${encodeURIComponent(review.restaurant_id)}&name=${encodeURIComponent(review.name)}&rating=${encodeURIComponent(review.rating)}&comments=${encodeURIComponent(review.comments)}`);
+        })          
+      }
+    }
+  })
+})

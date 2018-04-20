@@ -191,6 +191,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
     ul.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
+  lazyLoadImages();
   window.addEventListener("DOMContentLoaded", lazyLoadImages);
   window.addEventListener("load", lazyLoadImages);
   window.addEventListener("resize", lazyLoadImages);
